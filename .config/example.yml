@@ -134,3 +134,6 @@ drive:
 
 # Clustering
 # clusterLimit: 1
+
+# 新規登録を禁止してお一人様インスタンスにする
+singleMode: false
