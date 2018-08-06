@@ -27,6 +27,11 @@ export default async (ctx: Koa.Context) => {
 		}
 	}
 
+	if (config.singleMode) {
+		ctx.throw(400, 'single-only');
+		return;
+	}
+
 	const username = body['username'];
 	const password = body['password'];
 

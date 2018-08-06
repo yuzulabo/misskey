@@ -6,7 +6,8 @@
 		<div class="about">
 			<h2>{{ name || 'unidentified' }}</h2>
 			<p v-html="description || '%i18n:common.about%'"></p>
-			<router-link class="signup" to="/signup">%i18n:@signup%</router-link>
+			<p class="singlemode" v-if="singleMode">このMisskeyサーバーは新規登録を停止しています。</p>
+			<router-link class="signup" to="/signup" v-if="!singleMode">%i18n:@signup%</router-link>
 		</div>
 		<div class="login">
 			<mk-signin :with-avatar="false"/>
@@ -29,135 +30,158 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { apiUrl, copyright, host, name, description } from '../../../config';
+import Vue from "vue";
+import { apiUrl, copyright, host, name, description, singleMode } from "../../../config";
 
 export default Vue.extend({
-	data() {
-		return {
-			apiUrl,
-			copyright,
-			stats: null,
-			host,
-			name,
-			description,
-			tags: []
-		};
-	},
-	created() {
-		(this as any).api('stats').then(stats => {
-			this.stats = stats;
-		});
+  data() {
+    return {
+      apiUrl,
+      copyright,
+      stats: null,
+      host,
+      name,
+      description,
+      tags: [],
+      singleMode
+    };
+  },
+  created() {
+    (this as any).api("stats").then(stats => {
+      this.stats = stats;
+    });
 
-		(this as any).api('hashtags/trend').then(stats => {
-			this.tags = stats.map(x => x.tag);
-		});
-	}
+    (this as any).api("hashtags/trend").then(stats => {
+      this.tags = stats.map(x => x.tag);
+    });
+  }
 });
 </script>
 
 <style lang="stylus" scoped>
-.welcome
-	text-align center
-	//background #fff
+.welcome {
+	text-align: center;
 
-	> div
-		padding 32px
-		margin 0 auto
-		max-width 500px
+	// background #fff
+	> div {
+		padding: 32px;
+		margin: 0 auto;
+		max-width: 500px;
 
-		> img
-			display block
-			max-width 200px
-			margin 0 auto
+		> img {
+			display: block;
+			max-width: 200px;
+			margin: 0 auto;
+		}
 
-		> .host
-			display block
-			text-align center
-			padding 6px 12px
-			line-height 32px
-			font-weight bold
-			color #333
-			background rgba(#000, 0.035)
-			border-radius 6px
+		> .host {
+			display: block;
+			text-align: center;
+			padding: 6px 12px;
+			line-height: 32px;
+			font-weight: bold;
+			color: #333;
+			background: rgba(#000, 0.035);
+			border-radius: 6px;
+		}
 
-		> .about
-			margin-top 16px
-			padding 16px
-			color #555
-			background #fff
-			border-radius 6px
+		> .about {
+			margin-top: 16px;
+			padding: 16px;
+			color: #555;
+			background: #fff;
+			border-radius: 6px;
 
-			> h2
-				margin 0
+			> h2 {
+				margin: 0;
+			}
 
-			> p
-				margin 8px
+			> p {
+				margin: 8px;
+			}
 
-			> .signup
-				font-weight bold
+			> .signup {
+				font-weight: bold;
+			}
 
-		> .login
-			margin 16px 0
+			> .singlemode {
+				color: red;
+			}
+		}
 
-			> form
+		> .login {
+			margin: 16px 0;
 
-				button
-					display block
-					width 100%
-					padding 10px
-					margin 0
-					color #333
-					font-size 1em
-					text-align center
-					text-decoration none
-					text-shadow 0 1px 0 rgba(255, 255, 255, 0.9)
-					background-image linear-gradient(#fafafa, #eaeaea)
-					border 1px solid #ddd
-					border-bottom-color #cecece
-					border-radius 4px
+			> form {
+				button {
+					display: block;
+					width: 100%;
+					padding: 10px;
+					margin: 0;
+					color: #333;
+					font-size: 1em;
+					text-align: center;
+					text-decoration: none;
+					text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+					background-image: linear-gradient(#fafafa, #eaeaea);
+					border: 1px solid #ddd;
+					border-bottom-color: #cecece;
+					border-radius: 4px;
 
-					&:active
-						background-color #767676
-						background-image none
-						border-color #444
-						box-shadow 0 1px 3px rgba(#000, 0.075), inset 0 0 5px rgba(#000, 0.2)
+					&:active {
+						background-color: #767676;
+						background-image: none;
+						border-color: #444;
+						box-shadow: 0 1px 3px rgba(#000, 0.075), inset 0 0 5px rgba(#000, 0.2);
+					}
+				}
+			}
+		}
 
-		> .tl
-			margin 16px 0
+		> .tl {
+			margin: 16px 0;
 
-			> *
-				max-height 300px
-				border-radius 6px
-				overflow auto
-				-webkit-overflow-scrolling touch
+			> * {
+				max-height: 300px;
+				border-radius: 6px;
+				overflow: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+		}
 
-		> .hashtags
-			padding 16px 0
-			border solid 2px #ddd
-			border-radius 8px
+		> .hashtags {
+			padding: 16px 0;
+			border: solid 2px #ddd;
+			border-radius: 8px;
 
-			> *
-				margin 0 16px
+			> * {
+				margin: 0 16px;
+			}
+		}
 
-		> .stats
-			margin 16px 0
-			padding 8px
-			font-size 14px
-			color #444
-			background rgba(#000, 0.1)
-			border-radius 6px
+		> .stats {
+			margin: 16px 0;
+			padding: 8px;
+			font-size: 14px;
+			color: #444;
+			background: rgba(#000, 0.1);
+			border-radius: 6px;
 
-			> *
-				margin 0 8px
+			> * {
+				margin: 0 8px;
+			}
+		}
 
-		> footer
-			text-align center
-			color #444
+		> footer {
+			text-align: center;
+			color: #444;
 
-			> small
-				display block
-				margin 16px 0 0 0
-				opacity 0.7
-
+			> small {
+				display: block;
+				margin: 16px 0 0 0;
+				opacity: 0.7;
+			}
+		}
+	}
+}
 </style>
