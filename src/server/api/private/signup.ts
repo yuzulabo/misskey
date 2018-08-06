@@ -27,8 +27,8 @@ export default async (ctx: Koa.Context) => {
 		}
 	}
 
-	if (process.env.NODE_ENV !== 'test' && config.singleMode) {
-		ctx.throw(403, 'single-only');
+	if (config.singleMode) {
+		ctx.throw(400, 'single-only');
 		return;
 	}
 

@@ -1,6 +1,6 @@
 <template>
 <div class="mk-welcome">
-	<img ref="pointer" class="pointer" src="/assets/pointer.png" alt="">
+	<img ref="pointer" class="pointer" src="/assets/pointer.png" alt="" v-if="!singleMode">
 	<button @click="dark">
 		<template v-if="$store.state.device.darkmode">%fa:moon%</template>
 		<template v-else>%fa:R moon%</template>
@@ -21,7 +21,7 @@
 					<p class="powerd-by" v-if="name">%i18n:@powered-by-misskey%</p>
 					<p class="desc" v-html="description || '%i18n:common.about%'"></p>
 					<p class="desc singlemode" v-if="singleMode">このMisskeyサーバーは新規登録を停止しています。</p>
-					<a ref="signup" @click="signup">📦 %i18n:@signup%</a>
+					<a ref="signup" @click="signup" v-if="!singleMode">📦 %i18n:@signup%</a>
 				</div>
 				<div class="login">
 					<mk-signin/>
@@ -52,7 +52,8 @@ import {
   name,
   description,
   copyright,
-  welcomeBgUrl
+	welcomeBgUrl,
+	singleMode
 } from "../../../config";
 
 export default Vue.extend({

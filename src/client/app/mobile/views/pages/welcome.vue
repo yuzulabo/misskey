@@ -7,7 +7,7 @@
 			<h2>{{ name || 'unidentified' }}</h2>
 			<p v-html="description || '%i18n:common.about%'"></p>
 			<p class="singlemode" v-if="singleMode">このMisskeyサーバーは新規登録を停止しています。</p>
-			<router-link class="signup" to="/signup">%i18n:@signup%</router-link>
+			<router-link class="signup" to="/signup" v-if="!singleMode">%i18n:@signup%</router-link>
 		</div>
 		<div class="login">
 			<mk-signin :with-avatar="false"/>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { apiUrl, copyright, host, name, description } from "../../../config";
+import { apiUrl, copyright, host, name, description, singleMode } from "../../../config";
 
 export default Vue.extend({
   data() {
