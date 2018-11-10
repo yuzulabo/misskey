@@ -360,6 +360,8 @@ common/views/components/note-menu.vue:
   delete: "削除"
   delete-confirm: "この投稿を削除しますか？"
   remote: "投稿元で見る"
+  watching: "通知する"
+  unwatching: "通知しない"
 
 common/views/components/poll.vue:
   vote-to: "「{}」に投票する"

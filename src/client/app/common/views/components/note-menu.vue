@@ -54,6 +54,16 @@ export default Vue.extend({
 								text: this.$t('pin'),
 								action: this.pin
 							}
+					] : [], this.note.userId != this.$store.state.i.id ? [
+						this.note.isWatching ? {
+							icon: 'bell-slash',
+							text: this.$t('unwatching'),
+							action: this.unwatching
+						} : {
+							icon: 'bell',
+							text: this.$t('watching'),
+							action: this.watching
+						}
 					] : []
 				], [
 					this.note.userId == this.$store.state.i.id || this.$store.state.i.isAdmin ? [{
@@ -115,6 +125,22 @@ export default Vue.extend({
 				noteId: this.note.id
 			}).then(() => {
 				this.$root.new(Ok);
+				this.destroyDom();
+			});
+		},
+
+		watching() {
+			this.$root.api('notes/watching/create', {
+				noteId: this.note.id
+			}).then(() => {
+				this.destroyDom();
+			});
+		},
+
+		unwatching() {
+			this.$root.api('notes/watching/delete', {
+				noteId: this.note.id
+			}).then(() => {
 				this.destroyDom();
 			});
 		},
